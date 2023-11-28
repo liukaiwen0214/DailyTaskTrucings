@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imax.mapper.StudentInfoMapper">
+    <insert id="insertStudent">
+        insert into student_info (id, name, sex, birthday, address) value (#{id}, #{name}, #{sex}, #{birthday}, #{address})
+    </insert>
+    <!--    set id = #{id}-->
+    <!--    set name = #{name}-->
+    <!--    set sex = #{sex}-->
+    <!--    set birthday = #{birthday}-->
+    <!--    set address = #{address}-->
+    <update id="updateStudent">
+        update student_info
+        <set>
+            <if test="id != null and id != ''">
+                id = #{id},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delStudent">
+        delete from student_info where id
+        in(
+        <foreach collection="id" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+    <!--获取list-->
+    <select id="getAllStudent" resultType="StudentInfoTable">
+        select *
+        from StudyData.student_info
+    </select>
+    <select id="selectStudent" resultType="StudentInfoTable">
+        select *
+        from StudyData.student_info
+        where id = #{id}
+    </select>
+    <select id="likeSelect" resultType="StudentInfoTable">
+        select *
+        from student_info
+        <where>
+            <if test="uid != null and uid != ''">
+                and id like '%'
+                #{uid}
+                '%'
+            </if>
+            <if test="name != null and name != ''">
+                and name like '%'
+                #{name}
+                '%'
+            </if>
+        </where>
+
+    </select>
+    <select id="selectSinge" resultType="StudentInfoTable">
+        select * from student_info
+        <where>
+            <choose>
+                <when test="id != null and id != ''">
+                    id like '%'
+                    #{id}
+                    '%'
+                </when>
+                <when test="name != null and name != ''">
+                    name like '%'
+                    #{name}
+                    '%'
+                </when>
+            </choose>
+        </where>
+    </select>
+
+</mapper>
+
+

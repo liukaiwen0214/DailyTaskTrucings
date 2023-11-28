@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--引入配置文件-->
+    <properties resource="jdbc.properties"/>
+    <!--
+        mybatis配置文件中一定要按照顺序来进行配置
+        properties?,settings?,typeAliases?,typeHandlers?,objectFactory?,
+        objectWrapperFactory?,reflectorFactory?,plugins?,environments?,
+        databaseIdProvider?,mappers?)".
+    -->
+    <typeAliases>
+        <!--进行书写别名
+            类型别名他不进行区分大小写 ，如果alias不进行设置就会拥有一个默认的别名，默认的就是当前的类名
+            typealias: 设置某个类型的别名
+            属性：
+                type:  设置需要设置别名的类型
+                alias: 设置某个类型的别名，若不设置该属性，就会拥有一个默认的别名，默认的别名就是当前的类名。
+        -->
+        <!--<typeAlias type="com.fangshaolei.mybatis.pojo.User"  alias="user"/>-->
+        <package name="com.imax.pojo"/> <!--通过以包为单位来进行设置-->
+    </typeAliases>
+    <!--
+        environments: 配置多个连接数据的环境
+        属性：
+            default: 设置默认使用的环境id
+    -->
+    <environments default="development">
+        <!--开发环境
+            environment: 用来配置某个具体的环境
+            属性：
+                id: 表示连接数据库环境的唯一标识，不能重复
+                属性：
+                    type: = "JDBC | MANAGED"
+                    JDBC: 表示当前环境中，执行SQL时，使用的是JDBC中原生的事务管理方式， 事务的提交和回滚需要手动来进行处理
+                    MANAGED: 被管理，例如spring
+        -->
+<!--        <environment id="test">-->
+            <!--事务管理器通过jdbc来进行管理-->
+<!--            <transactionManager type="JDBC"/>-->
+            <!--数据源，从数据连接池中进行取用
+                datasource: 配置数据源
+                属性：
+                    type: 设置数据源类型
+                    type = "POOLED | UNPOOLED | JNDI"
+                    POOLED: 表示使用数据库连接池缓存数据库连接
+                    UNPOOLED: 表示不使用数据库中的连接词
+                    JNDI: 表示使用上下文中的数据源连接池
+            -->
+            <!--测试-->
+<!--            <dataSource type="POOLED">-->
+<!--                <property name="driver" value="${jdbc.driver}"/>-->
+<!--                <property name="url" value="${jdbc.urlTest}"/>-->
+<!--                <property name="username" value="${jdbc.username}"/>-->
+<!--                <property name="password" value="${jdbc.password}"/>-->
+<!--            </dataSource>-->
+<!--        </environment>-->
+<!--        正式环境-->
+        <environment id="development">
+            <!--事务管理器通过jdbc来进行管理-->
+            <transactionManager type="JDBC"/>
+            <!--数据源，从数据连接池中进行取用 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--映入配置文件-->
+    <mappers>
+<!--         <mapper resource="mappers/StudentInfoMapper.xml"/>-->
+         <mapper resource="mappers/UserGoAShoreMapper.xml"/>
+        <!--
+            以包围单位引入映射文件
+            要求：
+            1.mapper接口所在的包要和映射文件所在的包一致
+            2. mapper接口要和映射文件的名字是一致的
+        -->
+<!--        <package name="com.fangshaolei.mybatis.mapper"/>-->
+    </mappers>
+</configuration>
